@@ -1,9 +1,30 @@
 const express = require('express')
-
+const serverconfig =require('./configs/server.config');
+const mongoose = require('mongoose');
+const dbConfig = require('./configs/db.config');
 
 const app = express();
 
 
-app.listen(4444, ()=>{
-    console.log("server started");
+
+/**
+ * Logic to connect to MongoDB and create an ADMIN user
+ * Need to have the mongodb up and running in your local machine
+ */
+mongoose.connect("dbConfig.DB_URL");
+const db = mongoose.connection ;
+
+db.on("error", ()=>{
+    console.log("Error while connecting to DB");
+});
+
+db.once("open", ()=>{
+    console.log("DB is connected");
+})
+
+
+
+
+app.listen(serverconfig.PORT, ()=>{
+    console.log('server started on the port number ${serverConfig.PORT}' );
 })
